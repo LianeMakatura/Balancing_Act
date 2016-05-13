@@ -12,7 +12,7 @@ public class Rotate : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		
-		Vector3 RotationVect = (0,RotateSpeed,0);
+		Vector3 RotationVect = new Vector3(0, RotateSpeed,0);
 		transform.Rotate(RotationVect);
 	
 	}
