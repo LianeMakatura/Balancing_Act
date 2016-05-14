@@ -4,6 +4,7 @@ using System.Collections;
 public class Pendant : MonoBehaviour {
 	public float mat_density;
 
+
 	//use this for initialization
 	void Start ()
 	{
@@ -49,7 +50,7 @@ public class Pendant : MonoBehaviour {
 
 
 	public void Update() {
-		
+
 	}
 
 }

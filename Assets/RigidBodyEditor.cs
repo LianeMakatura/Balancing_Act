@@ -4,7 +4,7 @@ using UnityEngine;
 public class RigidBodyEditor : MonoBehaviour
 {
 
-	public float CoM_indicator_size = 0.1f;
+	public float CoM_indicator_size = 1f;
 	private Vector3 marker_scale_vec;
 	private GameObject marker; 
 
@@ -14,12 +14,13 @@ public class RigidBodyEditor : MonoBehaviour
 		marker.transform.parent = gameObject.transform; //parent CoM to the object its representing
 
 		marker_scale_vec = new Vector3(CoM_indicator_size, CoM_indicator_size, CoM_indicator_size);
-		marker.transform.localScale = new Vector3(CoM_indicator_size, CoM_indicator_size, CoM_indicator_size);
-		marker.GetComponent<Rigidbody>().isKinematic = true;
+		marker.transform.localScale = marker_scale_vec;
 
 		Rigidbody marker_rb = marker.AddComponent<Rigidbody>(); // Add the rigidbody.
-		marker_rb.mass = 0; // Set the GO's mass to 5 via the Rigidbody.
+		marker_rb.mass = 0;
+		marker_rb.isKinematic = true; // not controlled by physics
 
+		marker.AddComponent<SuspensionPoint>(); // add suspension point functionality
 	}
 
 	private Vector3 findSuspensionPoint(Rigidbody rb) {
