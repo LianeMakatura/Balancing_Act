@@ -59,7 +59,7 @@ public class DragRigidBody : MonoBehaviour {
 		Vector3 v3 = Input.mousePosition;
 		v3.z = catchingDistance;
 		v3 = Camera.main.ScreenToWorldPoint(v3);
-		Debug.Log(v3); //Current Position of mouse in world space
+		//Debug.Log(v3); //Current Position of mouse in world space
 		return v3;
 	}
 }
