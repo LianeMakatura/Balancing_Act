@@ -9,6 +9,7 @@ public class ConnectComponents : MonoBehaviour {
 	public GameObject connector; // cylinder to represent connector
 	public Button myselfButton;
 	private MobileMaster masterMobile;
+	private GameObject obj1, obj2;
 	public float indicator_size = 1f;
 
 
@@ -21,19 +22,30 @@ public class ConnectComponents : MonoBehaviour {
 	}
 
 	void connect() {
+		if (masterMobile.selected.Count == 2) {
+			obj1 = ((GameObject)masterMobile.selected [0]);
+			obj2 = ((GameObject)masterMobile.selected [1]);
+
+			makeConnector ();
+			makeImmutable ();
+			createMultiBodyPendant ();
+		} 
+		else {
+			Debug.Log ("Must have 2 selected");
+		}
+	}
+
+	// connect the selected objects
+	void makeConnector() {
 		Debug.Log ("trying to connect");
 		// instantiate the cylinder with one of the points as point of instantiation
-		GameObject obj1 = ((GameObject)masterMobile.selected[0]);
-		GameObject obj2 = ((GameObject)masterMobile.selected[1]);
-
 		Vector3 obj1_pos = obj1.transform.position;
 		Vector3 obj2_pos = obj2.transform.position;
 
-		Vector3 pos = Vector3.Lerp(obj1_pos, obj2_pos, 0.5f);
+		Vector3 pos = Vector3.Lerp(obj1_pos, obj2_pos, 0.5f); // put origin of object in between the two pieces
 
 		Quaternion rot = Quaternion.identity;
 		GameObject newConnector = (GameObject) Instantiate (connector, pos, rot);
-		//newConnector.transform.parent = obj1.transform; //parent CoM to the object its representing
 
 		Vector3 scale_vec = new Vector3(indicator_size, indicator_size, indicator_size);
 		newConnector.transform.localScale = scale_vec;
@@ -44,11 +56,26 @@ public class ConnectComponents : MonoBehaviour {
 
 		//scale cylinder based on distance between the points
 		Vector3 newScale = newConnector.transform.localScale;
-//		newScale.y = Vector3.Distance(obj1.transform.TransformPoint(obj1_pos), obj2.transform.TransformPoint(obj2_pos))/2;
 		newScale.y = Vector3.Distance(obj1_pos, obj2_pos)/2;
 		newConnector.transform.localScale = newScale;
+	}
+
+	void makeImmutable() {
+		GameObject cube1 = obj1.transform.parent.gameObject;
+		GameObject cube2 = obj2.transform.parent.gameObject;
+
+		masterMobile.selected.Remove(obj1);			// clear out the selected list
+		masterMobile.selected.Remove(obj2);
+
+		Destroy (cube1.GetComponent<DragRigidBody>());		// can no longer drag the cubes
+		Destroy (cube2.GetComponent<DragRigidBody>());
+
+		Destroy (obj1);								// get rid of the suspension points
+		Destroy (obj2);
+	}
 
 
+	void createMultiBodyPendant() {
 	}
 
 	// Update is called once per frame

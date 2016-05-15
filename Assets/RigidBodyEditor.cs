@@ -40,8 +40,9 @@ public class RigidBodyEditor : MonoBehaviour
 		Rigidbody rb = gameObject.GetComponent<Rigidbody>();
 
 		// need to find the highest intersection point of the mesh that's above the com
-
-		marker.GetComponent<Transform>().position = findSuspensionPoint(rb);
+		if (marker != null) {
+			marker.GetComponent<Transform> ().position = findSuspensionPoint (rb);
+		}
 	}
 }
 
