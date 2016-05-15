@@ -71,15 +71,6 @@ public class ConnectComponents : MonoBehaviour {
 		mbp.addConnector (newConnector);
 	}
 
-	/// <summary>
-	/// TODO FIGURE OUT WHY THE CONNECTOR DESTROYS AREN'T WORKING
-	/// ADD CONSTRAINTS BETWEEN THE OBJECTS SO WE CAN DO PHYSICS SIM
-	/// UPDATE SUSP PT ACCORDING TO CENTER OF MASS
-	/// 
-	/// also, link the objects so the draggable attribute applies to the whole multibody pendant
-	/// figure out a way to nest individual pendants as multibody? or figure out clean way to join them together.
-	/// </summary>
-
 	void makeImmutable_connect() {
 		GameObject cube1 = obj1.transform.parent.gameObject;
 		GameObject cube2 = obj2.transform.parent.gameObject;

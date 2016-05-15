@@ -15,10 +15,9 @@ public class MultiBodyPendant : MonoBehaviour {
 
 	public void addPendant(GameObject shape) {
 		pendants.Add (shape);
-		Debug.Log (shape.transform.parent.ToString());
 		shape.transform.parent = gameObject.transform;
 	}
-
+		
 	public void addConnector(GameObject shape) {
 		pendants.Add (shape);
 		shape.transform.parent = gameObject.transform;
