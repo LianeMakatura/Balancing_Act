@@ -20,6 +20,9 @@ public class RigidBodyEditor : MonoBehaviour
 		marker_rb.mass = 0;
 		marker_rb.isKinematic = true; // not controlled by physics
 
+		Material mat = marker.GetComponent<Renderer>().material; //change the sphere's material to be red
+		mat.color = Color.red;
+
 		marker.AddComponent<SuspensionPoint>(); // add suspension point functionality
 	}
 
@@ -29,15 +32,12 @@ public class RigidBodyEditor : MonoBehaviour
 		// TODO find amount to offset the CoM along direction of gravity (y) to intersect with the mesh
 
 
-		return com + new Vector3(0, 1, 0);
+		return com + new Vector3(0, 0.6f, 0);
 	}
 
 	void Update()
 	{
 		Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-
-		Material mat = marker.GetComponent<Renderer>().material; //change the sphere's material to be red
-		mat.color = Color.red;
 
 		// need to find the highest intersection point of the mesh that's above the com
 

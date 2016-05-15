@@ -21,7 +21,7 @@ public class DragRigidBody : MonoBehaviour {
 				draggingObject = GetObjectFromMouseRaycast();
 				if (draggingObject)
 				{
-					draggingObject.GetComponent<Rigidbody>().isKinematic = true;
+//					draggingObject.GetComponent<Rigidbody>().isKinematic = true;
 					isDragging = true;
 				}
 			}
@@ -31,10 +31,10 @@ public class DragRigidBody : MonoBehaviour {
 			}
 		}
 		else {
-			if (draggingObject != null)
-			{
-				draggingObject.GetComponent<Rigidbody>().isKinematic = false;
-			}
+//			if (draggingObject != null)
+//			{
+//				draggingObject.GetComponent<Rigidbody>().isKinematic = true;
+//			}
 			isDragging = false;
 		}
 	}

@@ -6,7 +6,7 @@ public class ConnectComponents : MonoBehaviour {
 	// will eventually create a cylinder (hopefully extruded along a curve?), put both involved components and the connecting edge in the same
 	// multibody pendant object, and update the center of mass (math and display)
 	// will have to look at rigid connections between these things, and how to fix a point and simulate
-	public GameObject pend;
+	public GameObject connector; // cylinder to represent connector
 	public Button myselfButton;
 
 	// Use this for initialization
@@ -16,9 +16,15 @@ public class ConnectComponents : MonoBehaviour {
 	}
 
 	void instantiateMyCube() {
+		// instantiate the cylinder with one of the points as point of instantiation
+
 		Vector3 pos = new Vector3(0, 0, 0);
 		Quaternion rot = Quaternion.identity;
-		Instantiate (pend, pos, rot);
+		Instantiate (connector, pos, rot);
+
+		// transform.LookAt to mke cylinder face the other point
+		//scale cylinder based on distance between the points
+
 	}
 
 	// Update is called once per frame
