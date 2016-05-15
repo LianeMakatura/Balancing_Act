@@ -68,7 +68,7 @@ public class ConnectComponents : MonoBehaviour {
 
 		mbp.addPendant (obj1.transform.parent.gameObject);
 		mbp.addPendant (obj2.transform.parent.gameObject);
-		mbp.addConnector (newConnector);
+		mbp.addPendant (newConnector);
 	}
 
 	void makeImmutable_connect() {

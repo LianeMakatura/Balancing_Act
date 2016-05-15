@@ -1,15 +1,21 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class MultiBodyPendant : MonoBehaviour {
-	public List<GameObject> pendants = new List<GameObject>();
+	public List<GameObject> pendants;
 	private Vector3 CenterOfMass;
 
 	// Use this for initialization
-	void Start () {
-//		pendants = new List<GameObject>();
-		gameObject.AddComponent<RigidBodyEditor> (); // make this object have mass, CoM, etc.
+	void Awake () {
+		pendants = new List<GameObject>();
+		Rigidbody rb = gameObject.AddComponent<Rigidbody> (); // make this object have mass, CoM, etc.
+		rb.useGravity = false;		// don't want these unless simulating
+		rb.isKinematic = true;
+		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
+
+		gameObject.AddComponent<RigidBodyEditor> ();
 		gameObject.AddComponent<DragRigidBody>(); // draggable group
 	}
 
@@ -17,10 +23,13 @@ public class MultiBodyPendant : MonoBehaviour {
 		pendants.Add (shape);
 		shape.transform.parent = gameObject.transform;
 	}
-		
-	public void addConnector(GameObject shape) {
-		pendants.Add (shape);
-		shape.transform.parent = gameObject.transform;
+
+	// to be called via message after all objects have been added in ConnectComponents
+	public void freezeGroup () {
+		// add joints to constrain the group
+		// compute the center of mass
+
+		// change the location of the suspension point to be the center of mass
 	}
 
 	Vector3 computeCenterOfMass() {
