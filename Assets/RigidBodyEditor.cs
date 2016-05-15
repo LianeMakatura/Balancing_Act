@@ -9,7 +9,7 @@ public class RigidBodyEditor : MonoBehaviour
 	public GameObject marker; 
 	private Rigidbody game_object_rb;
 
-	void Start() {
+	void Awake() {
 		game_object_rb = gameObject.GetComponent<Rigidbody>();
 
 		// create marker to indicate CoM
@@ -28,6 +28,12 @@ public class RigidBodyEditor : MonoBehaviour
 		mat.color = Color.red;
 
 		marker.AddComponent<SuspensionPoint>(); // add suspension point functionality
+	}
+
+	// to remove the suspension point after the object it's attached to becomes immutable
+	public void removeSuspensionPoint() {
+		Destroy (marker);
+		marker = null;
 	}
 
 	private Vector3 findSuspensionPoint(Rigidbody rb) {

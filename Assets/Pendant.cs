@@ -6,7 +6,7 @@ public class Pendant : MonoBehaviour {
 
 
 	//use this for initialization
-	void Start ()
+	void Awake ()
 	{
 		Rigidbody rb = gameObject.AddComponent<Rigidbody> ();
 		rb.useGravity = false;		// don't want these unless simulating

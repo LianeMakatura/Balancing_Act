@@ -6,7 +6,6 @@ public class ConnectComponents : MonoBehaviour {
 	// will eventually create a cylinder (hopefully extruded along a curve?), put both involved components and the connecting edge in the same
 	// multibody pendant object, and update the center of mass (math and display)
 	// will have to look at rigid connections between these things, and how to fix a point and simulate
-	public GameObject connector; // cylinder to represent connector
 	public Button myselfButton;
 	private MobileMaster masterMobile;
 	private GameObject obj1, obj2, newConnector;
@@ -28,7 +27,8 @@ public class ConnectComponents : MonoBehaviour {
 
 			makeConnector ();
 			createMultiBodyPendant ();
-			makeImmutable ();
+			Debug.Log ("the value of newConnector is " + newConnector.ToString());
+			makeImmutable_connect ();
 		} 
 		else {
 			Debug.Log ("Must have 2 selected");
@@ -67,12 +67,8 @@ public class ConnectComponents : MonoBehaviour {
 		MultiBodyPendant mbp = pendant_group.AddComponent<MultiBodyPendant> ();
 
 		mbp.addPendant (obj1.transform.parent.gameObject);
-		Debug.Log ("added obj 1");
 		mbp.addPendant (obj2.transform.parent.gameObject);
-		Debug.Log ("added obj 2");
 		mbp.addConnector (newConnector);
-		Debug.Log ("added connector");
-		Debug.Log ("current pendant length is " + mbp.pendants.Count);
 	}
 
 	/// <summary>
@@ -84,31 +80,20 @@ public class ConnectComponents : MonoBehaviour {
 	/// figure out a way to nest individual pendants as multibody? or figure out clean way to join them together.
 	/// </summary>
 
-	void makeImmutable() {
-		Debug.Log ("trying to clean up");
+	void makeImmutable_connect() {
 		GameObject cube1 = obj1.transform.parent.gameObject;
 		GameObject cube2 = obj2.transform.parent.gameObject;
 
 		masterMobile.selected.Remove(obj1);			// clear out the selected list
-		masterMobile.selected.Remove(obj2);
-		Debug.Log ("trying to clean up 2");
+		masterMobile.selected.Remove(obj2);	
 
-		Destroy (cube1.GetComponent<DragRigidBody>());		// can no longer drag the cubes
-		Destroy (cube2.GetComponent<DragRigidBody>());
+		cube1.SendMessage ("makeImmutable");
+		cube2.SendMessage ("makeImmutable");
+		newConnector.SendMessage ("makeImmutable");
 
-		Debug.Log("1 object held in newConnector is: " + newConnector.ToString());
-		Destroy (newConnector.GetComponent<DragRigidBody>());		// can't drag the connector either -- WHY DOESN'T THIS WORK
-		Debug.Log ("trying to clean up 3");
-
-		Destroy (cube1.GetComponent<RigidBodyEditor>());	// get rid of the suspension points
-		Destroy (obj1);								
-		Destroy (cube2.GetComponent<RigidBodyEditor>());
-		Destroy (obj2);
-		Destroy (newConnector.GetComponent<RigidBodyEditor>()); // OR THIS
-		Destroy (newConnector.GetComponent<SuspensionPoint> ());// OR THIS
-
-		Debug.Log ("trying to clean up 4");
-
+		cube1.SendMessage ("removeSuspensionPoint");
+		cube2.SendMessage ("removeSuspensionPoint");
+		newConnector.SendMessage ("removeSuspensionPoint");
 	}
 
 	// Update is called once per frame
