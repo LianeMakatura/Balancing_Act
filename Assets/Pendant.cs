@@ -2,21 +2,30 @@
 using System.Collections;
 
 public class Pendant : MonoBehaviour {
-	public float mat_density;
+	public float mat_density = 1;
 
 
 	//use this for initialization
 	void Start ()
 	{
+		Rigidbody rb = gameObject.AddComponent<Rigidbody> ();
+		rb.useGravity = false;		// don't want these unless simulating
+		rb.isKinematic = true;
+		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
+
+		// find the mass of the object using the volume and material density
 		MeshFilter meshF = gameObject.GetComponent<MeshFilter>();
 		float volume = ComputeVolume(meshF);
 		string msg = "The volume of the mesh is " + volume + " cube units.";
 		Debug.Log(msg);
 
 		float newMass = volume * mat_density;
-		gameObject.GetComponent<Rigidbody>().mass = newMass;
+		rb.mass = newMass;
 		string msg2 = "The mass of the mesh is " + volume*mat_density + " cube units.";
 		Debug.Log(msg2);
+
+		gameObject.AddComponent<DragRigidBody> (); // makes cube draggable
+		gameObject.AddComponent<RigidBodyEditor> (); // creates the center of mass marker
 	}
 
 	public float SignedVolumeOfTriangle(Vector3 p1, Vector3 p2, Vector3 p3) //http://gamedev.stackexchange.com/questions/106318/getting-the-volume-of-an-uneven-mesh

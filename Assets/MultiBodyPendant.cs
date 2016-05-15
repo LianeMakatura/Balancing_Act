@@ -1,19 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-// might be about to 
+using System.Collections.Generic;
 
 public class MultiBodyPendant : MonoBehaviour {
-	public ArrayList pendants; // could also implement a heap-like array for binary tree imp.
-	private Vector3 com;
+	public List<GameObject> pendants = new List<GameObject>();
+	private Vector3 CenterOfMass;
 
 	// Use this for initialization
 	void Start () {
-		pendants = new ArrayList();
+//		pendants = new List<GameObject>();
+		gameObject.AddComponent<RigidBodyEditor> (); // make this object have mass, CoM, etc.
+		gameObject.AddComponent<DragRigidBody>(); // draggable group
 	}
 
-	void addPendant(GameObject shape) {
-		pendants.Add(shape);
+	public void addPendant(GameObject shape) {
+		pendants.Add (shape);
+		Debug.Log (shape.transform.parent.ToString());
+		shape.transform.parent = gameObject.transform;
+	}
+
+	public void addConnector(GameObject shape) {
+		pendants.Add (shape);
+		Debug.Log (shape.ToString());
+		Debug.Log (shape.transform.ToString());
+		Debug.Log (shape.transform.parent);
+		Debug.Log (gameObject.transform);
+		shape.transform.parent = gameObject.transform;
 	}
 
 	Vector3 computeCenterOfMass() {
@@ -26,7 +38,7 @@ public class MultiBodyPendant : MonoBehaviour {
 		}
 
 		CoM_loc /= mass_sum;
-		com = CoM_loc;
+		CenterOfMass = CoM_loc;
 		return CoM_loc;
 	}
 
