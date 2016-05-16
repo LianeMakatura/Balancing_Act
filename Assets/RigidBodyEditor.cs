@@ -4,11 +4,14 @@ using UnityEngine;
 public class RigidBodyEditor : MonoBehaviour
 {
 
-	public float CoM_indicator_size = 1f;
+	public float CoM_indicator_size = 0.1f;
 	private Vector3 marker_scale_vec;
-	private GameObject marker; 
+	public GameObject marker; 
+	private Rigidbody game_object_rb;
 
-	void Start() {
+	void Awake() {
+		game_object_rb = gameObject.GetComponent<Rigidbody>();
+
 		// create marker to indicate CoM
 		marker = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		marker.transform.parent = gameObject.transform; //parent CoM to the object its representing
@@ -19,8 +22,18 @@ public class RigidBodyEditor : MonoBehaviour
 		Rigidbody marker_rb = marker.AddComponent<Rigidbody>(); // Add the rigidbody.
 		marker_rb.mass = 0;
 		marker_rb.isKinematic = true; // not controlled by physics
+		marker_rb.useGravity = false;
+
+		Material mat = marker.GetComponent<Renderer>().material; //change the sphere's material to be red
+		mat.color = Color.red;
 
 		marker.AddComponent<SuspensionPoint>(); // add suspension point functionality
+	}
+
+	// to remove the suspension point after the object it's attached to becomes immutable
+	public void removeSuspensionPoint() {
+		Destroy (marker);
+		marker = null;
 	}
 
 	private Vector3 findSuspensionPoint(Rigidbody rb) {
@@ -29,19 +42,15 @@ public class RigidBodyEditor : MonoBehaviour
 		// TODO find amount to offset the CoM along direction of gravity (y) to intersect with the mesh
 
 
-		return com + new Vector3(0, 1, 0);
+		return com + new Vector3(0, 0.6f, 0);
 	}
 
 	void Update()
 	{
-		Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-
-		Material mat = marker.GetComponent<Renderer>().material; //change the sphere's material to be red
-		mat.color = Color.red;
-
 		// need to find the highest intersection point of the mesh that's above the com
-
-		marker.GetComponent<Transform>().position = findSuspensionPoint(rb);
+		if (marker != null && game_object_rb != null) {
+			marker.GetComponent<Transform> ().position = findSuspensionPoint (game_object_rb);
+		}
 	}
 }
 
