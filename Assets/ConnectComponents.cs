@@ -9,7 +9,7 @@ public class ConnectComponents : MonoBehaviour {
 	public Button myselfButton;
 	private MobileMaster masterMobile;
 	private GameObject obj1, obj2, newConnector;
-	public float indicator_size = 1f;
+	public float indicator_size = .1f;
 
 
 	// Use this for initialization
