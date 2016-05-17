@@ -18,7 +18,7 @@ public class MultiBodyPendant : MonoBehaviour {
 
 		gameObject.AddComponent<RigidBodyEditor> ();
 		DragRigidBody drb = gameObject.AddComponent<DragRigidBody>(); // draggable group
-		//drb.isDraggable = false;
+		drb.isDraggable = false;
 	}
 
 	public void addPendant(GameObject shape) {
@@ -47,6 +47,7 @@ public class MultiBodyPendant : MonoBehaviour {
 		CenterOfMass = computeCenterOfMass();
 
 		// change the location of the suspension point to be the center of mass
+		gameObject.GetComponent<Rigidbody>().centerOfMass = CenterOfMass;
 	}
 
 	Vector3 computeCenterOfMass() {
