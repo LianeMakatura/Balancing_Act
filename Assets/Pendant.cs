@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Pendant : MonoBehaviour {
 	public float mat_density = 1;
-
+	public bool isConnector = false; // assume it's an object
 
 	//use this for initialization
 	void Awake ()

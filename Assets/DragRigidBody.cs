@@ -15,19 +15,21 @@ public class DragRigidBody : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update() {
-		if (Input.GetMouseButton(0)) {
-			if (!isDragging) {
-				draggingObject = GetObjectFromMouseRaycast();
-				if (draggingObject) {
-					isDragging = true;
+		if (isDraggable) {
+			if (Input.GetMouseButton(0)) {
+				if (!isDragging) {
+					draggingObject = GetObjectFromMouseRaycast();
+					if (draggingObject) {
+						isDragging = true;
+					}
+				}
+				else if (draggingObject != null) {
+					draggingObject.GetComponent<Rigidbody>().MovePosition(CalculateMouse3DVector());
 				}
 			}
-			else if (draggingObject != null) {
-				draggingObject.GetComponent<Rigidbody>().MovePosition(CalculateMouse3DVector());
+			else {
+				isDragging = false;
 			}
-		}
-		else {
-			isDragging = false;
 		}
 	}
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class MultiBodyPendant : MonoBehaviour {
 	public List<GameObject> pendants;
 	private Vector3 CenterOfMass;
+	private GameObject newConnector;
 
 	// Use this for initialization
 	void Awake () {
@@ -16,18 +17,34 @@ public class MultiBodyPendant : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
 
 		gameObject.AddComponent<RigidBodyEditor> ();
-		gameObject.AddComponent<DragRigidBody>(); // draggable group
+		DragRigidBody drb = gameObject.AddComponent<DragRigidBody>(); // draggable group
+		//drb.isDraggable = false;
 	}
 
 	public void addPendant(GameObject shape) {
 		pendants.Add (shape);
 		shape.transform.parent = gameObject.transform;
+
+		if (shape.GetComponent<Pendant> ().isConnector) {
+			newConnector = shape; 			// keep track of the new connector so we know what to join them to
+		}
+	}
+
+	private void joinToMBP(GameObject shape) {
+		FixedJoint joint = shape.AddComponent<FixedJoint>();
+		joint.connectedBody = newConnector.GetComponent<Rigidbody>();
+//		shape.GetComponent<Rigidbody> ().isKinematic = false;
 	}
 
 	// to be called via message after all objects have been added in ConnectComponents
 	public void freezeGroup () {
 		// add joints to constrain the group
+		foreach (GameObject shape in pendants) {
+			joinToMBP (shape);
+		}
+
 		// compute the center of mass
+		CenterOfMass = computeCenterOfMass();
 
 		// change the location of the suspension point to be the center of mass
 	}
@@ -42,7 +59,6 @@ public class MultiBodyPendant : MonoBehaviour {
 		}
 
 		CoM_loc /= mass_sum;
-		CenterOfMass = CoM_loc;
 		return CoM_loc;
 	}
 

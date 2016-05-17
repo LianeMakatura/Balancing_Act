@@ -9,7 +9,7 @@ public class ConnectComponents : MonoBehaviour {
 	public Button myselfButton;
 	private MobileMaster masterMobile;
 	private GameObject obj1, obj2, newConnector;
-	public float indicator_size = .1f;
+	public float indicator_size = 0.1f;
 
 
 	// Use this for initialization
@@ -48,6 +48,7 @@ public class ConnectComponents : MonoBehaviour {
 
 		Vector3 scale_vec = new Vector3 (indicator_size, indicator_size, indicator_size);
 		newConnector.transform.localScale = scale_vec;
+		Debug.Log ("scale of piece is " + scale_vec.ToString());
 
 		// transform.LookAt to make y axis of cylinder face the other point
 		newConnector.transform.LookAt (obj2.transform.TransformPoint (obj2_pos));
@@ -56,9 +57,12 @@ public class ConnectComponents : MonoBehaviour {
 		//scale cylinder based on distance between the points
 		Vector3 newScale = newConnector.transform.localScale;
 		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2;
+		Debug.Log ("scale of piece is " + newScale.ToString());
 		newConnector.transform.localScale = newScale;
 
-		newConnector.AddComponent<Pendant> (); // we need material density, volume; adds rigid body and draggable
+		Pendant p = newConnector.AddComponent<Pendant> (); // we need material density, volume; adds rigid body and draggable
+		p.isConnector = true;
+		newConnector.GetComponent<DragRigidBody> ().isDraggable = true;
 	}
 
 
@@ -69,6 +73,8 @@ public class ConnectComponents : MonoBehaviour {
 		mbp.addPendant (obj1.transform.parent.gameObject);
 		mbp.addPendant (obj2.transform.parent.gameObject);
 		mbp.addPendant (newConnector);
+
+		mbp.SendMessage ("freezeGroup");
 	}
 
 	void makeImmutable_connect() {
