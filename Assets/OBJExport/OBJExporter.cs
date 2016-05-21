@@ -70,7 +70,7 @@ public class OBJExporter : ScriptableWizard
 
     void OnWizardUpdate()
     {
-        helpString = "Aaro4130's OBJ Exporter " + versionString;
+//        helpString = "Aaro4130's OBJ Exporter " + versionString;
     }
 
     Vector3 RotateAroundPoint(Vector3 point, Vector3 pivot, Quaternion angle)
