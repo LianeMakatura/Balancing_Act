@@ -17,37 +17,36 @@ public class MultiBodyPendant : MonoBehaviour {
 		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
 
 		gameObject.AddComponent<RigidBodyEditor> ();
+
 		DragRigidBody drb = gameObject.AddComponent<DragRigidBody>(); // draggable group
 		drb.isDraggable = false;
 	}
 
 	public void addPendant(GameObject shape) {
 		pendants.Add (shape);
-		shape.transform.parent = gameObject.transform;
+		//shape.transform.parent = gameObject.transform;
 
-		if (shape.GetComponent<Pendant> ().isConnector) {
-			newConnector = shape; 			// keep track of the new connector so we know what to join them to
-		}
+		// add joint to the connector (added before the pendants
+		//FixedJoint joint = shape.AddComponent<FixedJoint>();
+		//joint.connectedBody = newConnector.GetComponent<Rigidbody>();
+
+		// update the fixed joint
+		shape.GetComponent<FixedJoint>().connectedBody = newConnector.GetComponent<Rigidbody>();
 	}
 
-	private void joinToMBP(GameObject shape) {
-		FixedJoint joint = shape.AddComponent<FixedJoint>();
-		joint.connectedBody = newConnector.GetComponent<Rigidbody>();
-//		shape.GetComponent<Rigidbody> ().isKinematic = false;
+	public void addConnector(GameObject shape) {
+		pendants.Add (shape);
+		//shape.transform.parent = gameObject.transform;
+		newConnector = shape; 			// keep track of the new connector so we know what to join them to
 	}
 
 	// to be called via message after all objects have been added in ConnectComponents
 	public void freezeGroup () {
-		// add joints to constrain the group
-		foreach (GameObject shape in pendants) {
-			joinToMBP (shape);
-		}
+		CenterOfMass = computeCenterOfMass(); // compute the center of mass
+		gameObject.GetComponent<Rigidbody>().centerOfMass = CenterOfMass; // change the location of the suspension point to be the center of mass
 
-		// compute the center of mass
-		CenterOfMass = computeCenterOfMass();
-
-		// change the location of the suspension point to be the center of mass
-		gameObject.GetComponent<Rigidbody>().centerOfMass = CenterOfMass;
+		//update the fixed joint
+		newConnector.GetComponent<FixedJoint>().connectedBody = gameObject.GetComponent<RigidBodyEditor>().marker.GetComponent<Rigidbody>();
 	}
 
 	Vector3 computeCenterOfMass() {
@@ -58,7 +57,6 @@ public class MultiBodyPendant : MonoBehaviour {
 			CoM_loc += shape.GetComponent<Rigidbody>().worldCenterOfMass * shape.GetComponent<Rigidbody>().mass;
 			mass_sum += shape.GetComponent<Rigidbody>().mass;
 		}
-
 		CoM_loc /= mass_sum;
 		return CoM_loc;
 	}

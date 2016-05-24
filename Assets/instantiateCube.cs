@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class instantiateCube : MonoBehaviour {
 	public GameObject pend;
 	public Button myselfButton;
+	private int numCube = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -15,8 +16,16 @@ public class instantiateCube : MonoBehaviour {
 	void instantiateMyCube() {
 		Vector3 pos = new Vector3(0, 0, 0);
 		Quaternion rot = Quaternion.identity;
-		Instantiate (pend, pos, rot);
-	}
+		pend = GameObject.CreatePrimitive (PrimitiveType.Cube);
+
+		pend.AddComponent<Pendant> ();
+
+		pend.transform.position = pos;
+		pend.transform.rotation = rot;
+		pend.name = "Cube" + numCube++;
+
+		pend.GetComponent<BoxCollider>().isTrigger = true;
+	} 
 
 	// Update is called once per frame
 	void Update () {

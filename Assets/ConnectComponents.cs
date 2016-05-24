@@ -46,6 +46,9 @@ public class ConnectComponents : MonoBehaviour {
 		newConnector = GameObject.CreatePrimitive (PrimitiveType.Cylinder);
 		newConnector.transform.position = pos;
 
+		newConnector.GetComponent<CapsuleCollider>().isTrigger = true;
+
+
 		Vector3 scale_vec = new Vector3 (indicator_size, indicator_size, indicator_size);
 		newConnector.transform.localScale = scale_vec;
 		Debug.Log ("scale of piece is " + scale_vec.ToString());
@@ -70,9 +73,9 @@ public class ConnectComponents : MonoBehaviour {
 		GameObject pendant_group = new GameObject ();
 		MultiBodyPendant mbp = pendant_group.AddComponent<MultiBodyPendant> ();
 
+		mbp.addConnector (newConnector);
 		mbp.addPendant (obj1.transform.parent.gameObject);
 		mbp.addPendant (obj2.transform.parent.gameObject);
-		mbp.addPendant (newConnector);
 
 		mbp.SendMessage ("freezeGroup");
 	}

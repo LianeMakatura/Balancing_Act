@@ -12,6 +12,12 @@ public class SuspensionPoint : MonoBehaviour {
 	void Start () {
 		currentColor = 0;
 		masterMobile = GameObject.Find("Mobile_Master").GetComponent<MobileMaster> ();
+
+		// add fixed joint
+		gameObject.AddComponent<FixedJoint>(); // implicitly connected to the world
+
+		// set to trigger
+		gameObject.GetComponent<SphereCollider>().isTrigger = true;
 	}
 	
 	// Update is called once per frame
