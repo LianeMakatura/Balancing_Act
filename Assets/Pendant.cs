@@ -32,7 +32,45 @@ public class Pendant : MonoBehaviour {
 
 		gameObject.AddComponent<DragRigidBody> (); // makes cube draggable
 		gameObject.AddComponent<RigidBodyEditor> (); // creates the center of mass marker
+
+
+		// should I just remove the box/capsule colliders and use all mesh colliders? I probably should.
 	}
+
+	// find the center of mass of an arbitrary object
+	public Vector3 computeCenterOfMass() {
+		Collider col = gameObject.GetComponent<MeshCollider>(); // get the bounding box for an object
+		if (col == null) {
+			col = gameObject.GetComponent<BoxCollider>();
+		}
+		if (col == null) { // still null
+			col = gameObject.GetComponent<CapsuleCollider>();
+		}
+
+
+		Vector3 bound_min = col.bounds.min;
+		Vector3 bound_max = col.bounds.max;
+
+		float sample_rate = 0.001;
+		for (float x=bound_min.x; x <= bound_max.x; x+=sample_rate) {
+			for (float y=bound_min.y; y <= bound_max.y; y+=sample_rate) {
+				// cast a ray in the z direction
+				// if it hit my object
+					//add this coord to my running sum
+					// update how many points have been included in tally
+
+			}
+		}
+		// average all the positions by how many points were included (because we're assuming uniform density so they all have the same "mass" ie equal weighting)
+
+		//update the center of mass of the object
+	}
+
+	public Vector3 findSuspensionPoint() {
+		// calculate the intersection with the mesh that is directly above the center of mass in the direction of gravity
+	}
+
+
 
 	public float SignedVolumeOfTriangle(Vector3 p1, Vector3 p2, Vector3 p3) //http://gamedev.stackexchange.com/questions/106318/getting-the-volume-of-an-uneven-mesh
 	{
