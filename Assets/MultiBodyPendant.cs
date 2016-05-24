@@ -42,11 +42,8 @@ public class MultiBodyPendant : MonoBehaviour {
 
 	// to be called via message after all objects have been added in ConnectComponents
 	public void freezeGroup () {
-		// compute the center of mass
-		CenterOfMass = computeCenterOfMass();
-
-		// change the location of the suspension point to be the center of mass
-		gameObject.GetComponent<Rigidbody>().centerOfMass = CenterOfMass;
+		CenterOfMass = computeCenterOfMass(); // compute the center of mass
+		gameObject.GetComponent<Rigidbody>().centerOfMass = CenterOfMass; // change the location of the suspension point to be the center of mass
 
 		//update the fixed joint
 		newConnector.GetComponent<FixedJoint>().connectedBody = gameObject.GetComponent<RigidBodyEditor>().marker.GetComponent<Rigidbody>();
@@ -60,7 +57,6 @@ public class MultiBodyPendant : MonoBehaviour {
 			CoM_loc += shape.GetComponent<Rigidbody>().worldCenterOfMass * shape.GetComponent<Rigidbody>().mass;
 			mass_sum += shape.GetComponent<Rigidbody>().mass;
 		}
-
 		CoM_loc /= mass_sum;
 		return CoM_loc;
 	}

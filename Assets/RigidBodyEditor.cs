@@ -36,20 +36,19 @@ public class RigidBodyEditor : MonoBehaviour
 		joint.connectedBody = marker.GetComponent<Rigidbody>();
 	}
 
-	// to remove the suspension point after the object it's attached to becomes immutable
-	public void removeSuspensionPoint() {
-		Destroy (marker);
-		marker = null;
-	}
-
 	private Vector3 findSuspensionPoint(Rigidbody rb) {
-		rb.ResetCenterOfMass ();
-		Vector3 com = rb.transform.TransformPoint(rb.centerOfMass);
+		//Vector3 com = rb.transform.TransformPoint(rb.centerOfMass);
 
 		// TODO find amount to offset the CoM along direction of gravity (y) to intersect with the mesh
 
 
-		return com + new Vector3(0, 0.6f, 0);
+		return gameObject.GetComponent<Pendant> ().suspensionPoint;
+	}
+
+	// to remove the suspension point after the object it's attached to becomes immutable
+	public void removeSuspensionPoint() {
+		Destroy (marker);
+		marker = null;
 	}
 
 	void Update()

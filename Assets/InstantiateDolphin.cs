@@ -22,7 +22,6 @@ public class InstantiateDolphin : MonoBehaviour {
 
 		pendInstance.name = "Dolphin " + numCube++;
 
-//		pendInstance.GetComponent<MeshCollider>().isTrigger = true;
 	} 
 
 	// Update is called once per frame
