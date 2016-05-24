@@ -8,7 +8,13 @@ public class Pendant : MonoBehaviour {
 	//use this for initialization
 	void Awake ()
 	{
-		Rigidbody rb = gameObject.AddComponent<Rigidbody> ();
+		Rigidbody rb;
+		if (gameObject.GetComponent<Rigidbody> () == null) {
+			rb = gameObject.AddComponent<Rigidbody> ();
+		} else {
+			rb = gameObject.GetComponent<Rigidbody> ();
+		}
+
 		rb.useGravity = false;		// don't want these unless simulating
 		rb.isKinematic = true;
 		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.

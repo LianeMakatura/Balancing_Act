@@ -9,6 +9,8 @@ public class RigidBodyEditor : MonoBehaviour
 	public GameObject marker; 
 	private Rigidbody game_object_rb;
 
+//	public MeshCollider meshCollider;
+
 	void Awake() {
 		game_object_rb = gameObject.GetComponent<Rigidbody>();
 
@@ -41,6 +43,7 @@ public class RigidBodyEditor : MonoBehaviour
 	}
 
 	private Vector3 findSuspensionPoint(Rigidbody rb) {
+		rb.ResetCenterOfMass ();
 		Vector3 com = rb.transform.TransformPoint(rb.centerOfMass);
 
 		// TODO find amount to offset the CoM along direction of gravity (y) to intersect with the mesh
@@ -53,7 +56,7 @@ public class RigidBodyEditor : MonoBehaviour
 	{
 		// need to find the highest intersection point of the mesh that's above the com
 		if (marker != null && game_object_rb != null) {
-			marker.GetComponent<Transform> ().position = findSuspensionPoint (game_object_rb);
+			marker.transform.position = findSuspensionPoint (game_object_rb);
 		}
 	}
 }

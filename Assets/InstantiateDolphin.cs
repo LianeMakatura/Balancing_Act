@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class InstantiateDolphin : MonoBehaviour {
 	public GameObject pend;
+	public GameObject pendInstance;
 	public Button myselfButton;
 	private int numCube = 0;
 
@@ -16,12 +17,12 @@ public class InstantiateDolphin : MonoBehaviour {
 	void instantiateMyDolphin() {
 		Vector3 pos = new Vector3(0, 0, 0);
 		Quaternion rot = Quaternion.identity;
-		Instantiate (pend, pos, rot);
-		pend.AddComponent<Pendant> ();
+		pendInstance = Instantiate (pend, pos, rot) as GameObject;
+		pendInstance.AddComponent<Pendant> ();
 
-		pend.name = "Dolphin " + numCube++;
+		pendInstance.name = "Dolphin " + numCube++;
 
-		pend.GetComponent<BoxCollider>().isTrigger = true;
+//		pendInstance.GetComponent<MeshCollider>().isTrigger = true;
 	} 
 
 	// Update is called once per frame
