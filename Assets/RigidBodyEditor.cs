@@ -28,6 +28,10 @@ public class RigidBodyEditor : MonoBehaviour
 		mat.color = Color.red;
 
 		marker.AddComponent<SuspensionPoint>(); // add suspension point functionality
+
+		// add joint to the connector (added before the pendants
+		FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+		joint.connectedBody = marker.GetComponent<Rigidbody>();
 	}
 
 	// to remove the suspension point after the object it's attached to becomes immutable

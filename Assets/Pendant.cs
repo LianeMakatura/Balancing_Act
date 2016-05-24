@@ -57,6 +57,8 @@ public class Pendant : MonoBehaviour {
 	}
 
 
+	// also need to set the center of mass for objects
+
 
 	public void Update() {
 

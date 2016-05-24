@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class instantiateCube : MonoBehaviour {
+public class InstantiateDolphin : MonoBehaviour {
 	public GameObject pend;
 	public Button myselfButton;
 	private int numCube = 0;
@@ -10,30 +10,27 @@ public class instantiateCube : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myselfButton = GetComponent<Button>();
-		myselfButton.onClick.AddListener(() => instantiateMyCube());
+		myselfButton.onClick.AddListener(() => instantiateMyDolphin());
 	}
 
-	void instantiateMyCube() {
+	void instantiateMyDolphin() {
 		Vector3 pos = new Vector3(0, 0, 0);
 		Quaternion rot = Quaternion.identity;
-		pend = GameObject.CreatePrimitive (PrimitiveType.Cube);
-
+		Instantiate (pend, pos, rot);
 		pend.AddComponent<Pendant> ();
 
-		pend.transform.position = pos;
-		pend.transform.rotation = rot;
-		pend.name = "Cube" + numCube++;
+		pend.name = "Dolphin " + numCube++;
 
 		pend.GetComponent<BoxCollider>().isTrigger = true;
 	} 
 
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	// make sure we free up the listener
 	void Destroy() {
-		myselfButton.onClick.RemoveListener(() => instantiateMyCube());
+		myselfButton.onClick.RemoveListener(() => instantiateMyDolphin());
 	}
 }
