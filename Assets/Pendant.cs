@@ -74,6 +74,7 @@ public class Pendant : MonoBehaviour {
 			}
 		}
 		// average all the positions by how many points were included (because we're assuming uniform density so they all have the same "mass" ie equal weighting)
+		Debug.LogWarning("numpoints is " + num_points);
 		Vector3 com = point_sum / num_points;
 
 		//update the center of mass of the object (will no longer update automatically but that's not necessary anyway)

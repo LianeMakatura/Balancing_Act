@@ -34,15 +34,12 @@ public class RigidBodyEditor : MonoBehaviour
 		// add joint to the connector (added before the pendants
 		FixedJoint joint = gameObject.AddComponent<FixedJoint>();
 		joint.connectedBody = marker.GetComponent<Rigidbody>();
-	}
 
-	private Vector3 findSuspensionPoint(Rigidbody rb) {
-		//Vector3 com = rb.transform.TransformPoint(rb.centerOfMass);
+		// need to find the highest intersection point of the mesh that's above the com
+		if (marker != null && game_object_rb != null) {
+			marker.transform.position = gameObject.GetComponent<Pendant> ().suspensionPoint;
+		}
 
-		// TODO find amount to offset the CoM along direction of gravity (y) to intersect with the mesh
-
-
-		return gameObject.GetComponent<Pendant> ().suspensionPoint;
 	}
 
 	// to remove the suspension point after the object it's attached to becomes immutable
@@ -53,10 +50,7 @@ public class RigidBodyEditor : MonoBehaviour
 
 	void Update()
 	{
-		// need to find the highest intersection point of the mesh that's above the com
-		if (marker != null && game_object_rb != null) {
-			marker.transform.position = findSuspensionPoint (game_object_rb);
-		}
+
 	}
 }
 
