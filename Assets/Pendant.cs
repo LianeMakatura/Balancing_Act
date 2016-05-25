@@ -107,7 +107,9 @@ public class Pendant : MonoBehaviour, IPendant {
 		Vector3 bound_min = rend.bounds.min;
 		Vector3 bound_max = rend.bounds.max;
 
-		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, bound_min.z -suspPt.transform.localScale.y); // puts it in front of our mesh
+//		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, bound_min.z -suspPt.transform.localScale.y); // puts it in front of our mesh
+		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, 0f); // puts it in front of our mesh
+
 
 		for (float y=centerOfMass.y; y <= bound_max.y; y+=sample_rate) { // check along the upward direction
 			// cast a ray in the z direction
@@ -123,7 +125,9 @@ public class Pendant : MonoBehaviour, IPendant {
 
 		// we've got the last (highest) intersection
 		// take off 2 radii of the suspension point (so top of hole is 1 radius from top of object)
-		suspensionPoint.y -= 2 * suspPt.transform.localScale.y;
+		//suspensionPoint.y -= 2 * suspPt.transform.localScale.y;
+		suspensionPoint.y += suspPt.GetComponent<SphereCollider>().radius * suspPt.transform.localScale.y;
+
 		suspPt.transform.position = suspensionPoint;
 	}
 		

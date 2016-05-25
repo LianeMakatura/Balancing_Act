@@ -124,7 +124,8 @@ public class MultiBodyPendant : MonoBehaviour, IPendant {
 			}
 		}
 
-		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, minBound.z -suspPt.transform.localScale.y); // puts it in front of our mesh
+//		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, minBound.z -suspPt.transform.localScale.y); // puts it in front of our mesh
+		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, 0f); // puts it in front of our mesh
 
 		for (float y=centerOfMass.y; y <= maxBound.y; y+=sample_rate) { // check along the upward direction
 			// cast a ray in the z direction
@@ -142,7 +143,7 @@ public class MultiBodyPendant : MonoBehaviour, IPendant {
 
 		// we've got the last (highest) intersection
 		// take off 2 radii of the suspension point (so top of hole is 1 radius from top of object)
-		suspensionPoint.y += suspPt.transform.localScale.y;
+		suspensionPoint.y += suspPt.GetComponent<SphereCollider>().radius * suspPt.transform.localScale.y;
 		suspPt.transform.position = suspensionPoint;
 	}
 
