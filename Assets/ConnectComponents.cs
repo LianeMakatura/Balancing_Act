@@ -42,19 +42,17 @@ public class ConnectComponents : MonoBehaviour {
 		Vector3 obj1_pos = obj1.transform.position;
 		Vector3 obj2_pos = obj2.transform.position;
 
-		Debug.LogWarning ("objessdfsdlkfjs " + obj1_pos + ", " + obj2_pos);
-
 		Vector3 pos = Vector3.Lerp (obj1_pos, obj2_pos, 0.5f); // put origin of object in between the two pieces
 
 		Quaternion rot = Quaternion.identity;
 		newConnector = Instantiate (pend, pos, rot) as GameObject;
-		newConnector.AddComponent<Pendant> ();
+		Pendant p = newConnector.AddComponent<Pendant> ();
+		p.isConnector = true;
 
 		newConnector.name = "Connector " + conn_num++;
 
 		Vector3 scale_vec = new Vector3 (indicator_size, indicator_size, indicator_size);
 		newConnector.transform.localScale = scale_vec;
-		Debug.Log ("scale of piece is " + scale_vec.ToString());
 
 		// transform.LookAt to make y axis of cylinder face the other point
 		newConnector.transform.LookAt (obj2.transform.position );

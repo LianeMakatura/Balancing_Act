@@ -8,6 +8,7 @@ public class Pendant : MonoBehaviour, IPendant {
 	public Vector3 suspensionPoint;
 	public Vector3 centerOfMass;
 	public float voxelMass;
+	public Vector3 minBound, maxBound;
 
 	//use this for initialization
 	void Awake ()
@@ -39,10 +40,6 @@ public class Pendant : MonoBehaviour, IPendant {
 		gameObject.AddComponent<DragRigidBody> (); // makes cube draggable
 		gameObject.AddComponent<RigidBodyEditor> (); // creates the center of mass marker
 
-
-	}
-
-	void Start() {
 		computeCenterOfMass ();
 		Debug.Log ("center of mass is " + centerOfMass);
 		findSuspensionPoint ();
@@ -76,7 +73,7 @@ public class Pendant : MonoBehaviour, IPendant {
 				if (col.Raycast(ray, out hit, 100.0f)) {
 					point_sum += new Vector3(x, y, 0.0f);	//add this coord to my running sum
 					num_points++; // update how many points have been included in tally
-					Debug.DrawRay (start, Camera.main.transform.forward*10, Color.red, 20.0f);
+					//Debug.DrawRay (start, Camera.main.transform.forward*10, Color.red, 20.0f);
 				}
 
 			}
@@ -88,6 +85,9 @@ public class Pendant : MonoBehaviour, IPendant {
 		//update the center of mass of the object (will no longer update automatically but that's not necessary anyway)
 		centerOfMass = com;
 		voxelMass = num_points;
+		minBound = bound_min;
+		maxBound = bound_max;
+
 		gameObject.GetComponent<Rigidbody>().centerOfMass = com;
 	}
 
@@ -126,18 +126,7 @@ public class Pendant : MonoBehaviour, IPendant {
 		suspensionPoint.y -= 2 * suspPt.transform.localScale.y;
 		suspPt.transform.position = suspensionPoint;
 	}
-
-	public Vector3 getCenterOfMass() {
-		Debug.Log ("Pendant get CoM has been called!");
-		return centerOfMass;
-	}
-
-	public Vector3 getSuspensionPoint() {
-		Debug.Log ("Pendant get suspension point has been called!");
-		return suspensionPoint;
-	}
-
-
+		
 
 	public float SignedVolumeOfTriangle(Vector3 p1, Vector3 p2, Vector3 p3) //http://gamedev.stackexchange.com/questions/106318/getting-the-volume-of-an-uneven-mesh
 	{
@@ -172,4 +161,23 @@ public class Pendant : MonoBehaviour, IPendant {
 
 	}
 
+	// ALL THE INTERFACE GETTERS
+	public Vector3 getCenterOfMass() {
+		return centerOfMass;
+	}
+
+	public Vector3 getSuspensionPoint() {
+		return suspensionPoint;
+	}
+
+	public float getVoxelMass() {
+		return voxelMass;
+	}
+
+	public Vector3 getMinBound() {
+		return minBound;
+	}
+	public Vector3 getMaxBound() {
+		return maxBound;
+	}
 }
