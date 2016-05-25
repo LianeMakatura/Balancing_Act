@@ -63,6 +63,8 @@ public class ConnectComponents : MonoBehaviour {
 		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2;
 		Debug.Log ("scale of piece is " + newScale.ToString());
 		newConnector.transform.localScale = newScale;
+
+		newConnector.transform.Translate (newConnector.transform.InverseTransformVector(new Vector3 (0f, 0.075f, 0f)));
 	} 
 
 
