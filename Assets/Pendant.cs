@@ -4,9 +4,10 @@ using System.Collections;
 public class Pendant : MonoBehaviour, IPendant {
 	public float mat_density = 1;
 	public bool isConnector = false; // assume it's an object
-	public float sample_rate = 0.001f;
+	public float sample_rate = 0.01f;
 	public Vector3 suspensionPoint;
 	public Vector3 centerOfMass;
+	public float voxelMass;
 
 	//use this for initialization
 	void Awake ()
@@ -22,53 +23,60 @@ public class Pendant : MonoBehaviour, IPendant {
 		rb.isKinematic = true;
 		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
 
-		// find the mass of the object using the volume and material density
-		MeshFilter meshF = gameObject.GetComponent<MeshFilter>();
-		float volume = ComputeVolume(meshF);
-		string msg = "The volume of the mesh is " + volume + " cube units.";
-		Debug.Log(msg);
-
-		float newMass = volume * mat_density;
-		rb.mass = newMass;
-		string msg2 = "The mass of the mesh is " + volume*mat_density + " cube units.";
-		Debug.Log(msg2);
+		// find the mass of the object using the volume and material density -- this seems to be not totally functional :(
+		// scaling seems off
+//		MeshFilter meshF = gameObject.GetComponent<MeshFilter>();
+//		float volume = ComputeVolume(meshF);
+//		string msg = "The volume of the mesh is " + volume + " cube units.";
+//		Debug.Log(msg);
+//
+//		float newMass = volume * mat_density;
+//		rb.mass = newMass;
+//		string msg2 = "The mass of the mesh is " + volume*mat_density + " units.";
+//		Debug.Log(msg2);
+		rb.mass = voxelMass;
 
 		gameObject.AddComponent<DragRigidBody> (); // makes cube draggable
 		gameObject.AddComponent<RigidBodyEditor> (); // creates the center of mass marker
 
-		// should I just remove the box/capsule colliders and use all mesh colliders? I probably should.
 
+	}
+
+	void Start() {
 		computeCenterOfMass ();
 		Debug.Log ("center of mass is " + centerOfMass);
 		findSuspensionPoint ();
 		Debug.Log ("suspension point is " + suspensionPoint);
 	}
 
+
 	// find the center of mass of an arbitrary object
 	public void computeCenterOfMass() {
 		Vector3 point_sum = new Vector3(0f,0f,0f);
 		int num_points = 0;
 
+		Renderer rend = gameObject.GetComponent<Renderer> ();
 		Collider col = gameObject.GetComponent<MeshCollider>(); // get the bounding box for an object
 		if (col == null) {
 			Debug.Log("This object has no mesh collider!");
 		}
 
-		Vector3 bound_min = col.bounds.min;
-		Vector3 bound_max = col.bounds.max;
+		Vector3 bound_min = rend.bounds.min;
+		Vector3 bound_max = rend.bounds.max;
+		Debug.Log ("bound min: " + bound_min + ", Bound max: " +  bound_max);
 
 		for (float x=bound_min.x; x <= bound_max.x; x+=sample_rate) {
 			for (float y=bound_min.y; y <= bound_max.y; y+=sample_rate) {
 				// cast a ray in the z direction
 				Vector3 start = new Vector3(x, y, Camera.main.transform.position.z);
 				Ray ray = new Ray(start, Camera.main.transform.forward);
-//				Debug.DrawRay (start, Camera.main.transform.forward);
 
 				RaycastHit hit;
 				// if it hit my object
-				if (col.Raycast(ray, out hit, 1000.0f)) {
+				if (col.Raycast(ray, out hit, 100.0f)) {
 					point_sum += new Vector3(x, y, 0.0f);	//add this coord to my running sum
 					num_points++; // update how many points have been included in tally
+					Debug.DrawRay (start, Camera.main.transform.forward*10, Color.red, 20.0f);
 				}
 
 			}
@@ -79,20 +87,25 @@ public class Pendant : MonoBehaviour, IPendant {
 
 		//update the center of mass of the object (will no longer update automatically but that's not necessary anyway)
 		centerOfMass = com;
+		voxelMass = num_points;
 		gameObject.GetComponent<Rigidbody>().centerOfMass = com;
 	}
 
 	public void findSuspensionPoint() {
 		GameObject suspPt = gameObject.GetComponent<RigidBodyEditor>().marker;
+		if (suspPt == null) {
+			Debug.LogWarning ("there's no susp point!");
+		}
 
+		Renderer rend = gameObject.GetComponent<Renderer> ();
 		// calculate the intersection with the mesh that is directly above the center of mass in the direction of gravity
 		Collider col = gameObject.GetComponent<MeshCollider>(); // get the bounding box for an object
 		if (col == null) {
 			Debug.Log("This object has no mesh collider!");
 		}
 
-		Vector3 bound_max = col.bounds.max;
-		Vector3 bound_min = col.bounds.min;
+		Vector3 bound_min = rend.bounds.min;
+		Vector3 bound_max = rend.bounds.max;
 
 		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, bound_min.z -suspPt.transform.localScale.y); // puts it in front of our mesh
 
@@ -115,10 +128,12 @@ public class Pendant : MonoBehaviour, IPendant {
 	}
 
 	public Vector3 getCenterOfMass() {
+		Debug.Log ("Pendant get CoM has been called!");
 		return centerOfMass;
 	}
 
 	public Vector3 getSuspensionPoint() {
+		Debug.Log ("Pendant get suspension point has been called!");
 		return suspensionPoint;
 	}
 
@@ -148,7 +163,7 @@ public class Pendant : MonoBehaviour, IPendant {
 			Vector3 p3 = vertices[triangles[i + 2]];
 			volume += SignedVolumeOfTriangle(p1, p2, p3);
 		}
-		volume *= meshF.gameObject.transform.localScale.x * meshF.gameObject.transform.localScale.y * meshF.gameObject.transform.localScale.z;
+		volume *= gameObject.transform.localScale.x * gameObject.transform.localScale.y * gameObject.transform.localScale.z;
 		return Mathf.Abs(volume);
 	}
 

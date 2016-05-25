@@ -3,11 +3,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MultiBodyPendant : MonoBehaviour {
+public class MultiBodyPendant : MonoBehaviour, IPendant {
 	public List<GameObject> pendants;
 	private Vector3 centerOfMass;
 	private Vector3 suspensionPoint;
 	private GameObject newConnector;
+	public float sample_rate = 0.01f;
 
 	// Use this for initialization
 	void Awake () {
@@ -43,11 +44,13 @@ public class MultiBodyPendant : MonoBehaviour {
 
 	// to be called via message after all objects have been added in ConnectComponents
 	public void freezeGroup () {
-		centerOfMass = computeCenterOfMass(); // compute the center of mass
+		computeCenterOfMass(); // compute the center of mass
+		findSuspensionPoint();
+	
 		gameObject.GetComponent<Rigidbody>().centerOfMass = centerOfMass; // change the location of the suspension point to be the center of mass
 
 		//update the fixed joint
-		newConnector.GetComponent<FixedJoint>().connectedBody = gameObject.GetComponent<RigidBodyEditor>().marker.GetComponent<Rigidbody>();
+		//newConnector.GetComponent<FixedJoint>().connectedBody = gameObject.GetComponent<RigidBodyEditor>().marker.GetComponent<Rigidbody>();
 	}
 
 	Vector3 computeCenterOfMass() {
@@ -59,17 +62,66 @@ public class MultiBodyPendant : MonoBehaviour {
 			mass_sum += shape.GetComponent<Rigidbody>().mass;
 		}
 		CoM_loc /= mass_sum;
+		centerOfMass = CoM_loc;
+		Debug.Log ("Center of mass for the multibody pendant is: " + centerOfMass);
 		return CoM_loc;
 	}
 
+	public void findSuspensionPoint() {
+		GameObject suspPt = gameObject.GetComponent<RigidBodyEditor>().marker;
+
+		List<Collider> col_list = new List<Collider> ();
+		Vector3 bound_max = new Vector3(Mathf.NegativeInfinity, Mathf.NegativeInfinity, Mathf.NegativeInfinity);
+		Vector3 bound_min = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
+
+		// calculate the intersection with the mesh that is directly above the center of mass in the direction of gravity
+		foreach (GameObject shape in pendants) {
+			col_list.Add(shape.GetComponent<MeshCollider> ()); // get the bounding box for an object
+
+			// find the highest point we have to check 
+			Renderer rend = shape.GetComponent<Renderer> ();
+			Vector3 loc_bmin = rend.bounds.min;
+			Vector3 loc_bmax = rend.bounds.max;
+
+			if (loc_bmin.y < bound_min.y) {
+				bound_min = loc_bmin;
+			}
+			if (loc_bmax.y > bound_max.y) {
+				bound_max = loc_bmax;
+			}
+		}
+
+		suspensionPoint = new Vector3(centerOfMass.x, centerOfMass.y, bound_min.z -suspPt.transform.localScale.y); // puts it in front of our mesh
+
+		for (float y=centerOfMass.y; y <= bound_max.y; y+=sample_rate) { // check along the upward direction
+			// cast a ray in the z direction
+			Vector3 start = new Vector3(centerOfMass.x, y, Camera.main.transform.position.z);
+			Ray ray = new Ray(start, Camera.main.transform.forward);
+
+			RaycastHit hit;
+			// if it hit my object
+			foreach (Collider col in col_list) {
+				if (col.Raycast (ray, out hit, 1000.0f)) {
+					suspensionPoint.y = y;
+				}
+			}
+		}
+
+		// we've got the last (highest) intersection
+		// take off 2 radii of the suspension point (so top of hole is 1 radius from top of object)
+		suspensionPoint.y -= 2 * suspPt.transform.localScale.y;
+		suspPt.transform.position = suspensionPoint;
+	}
+
 	public Vector3 getCenterOfMass() {
+		Debug.Log ("MBP get CoM has been called!");
 		return centerOfMass;
 	}
 
 	public Vector3 getSuspensionPoint() {
+		Debug.Log ("MBP get suspension point has been called!");
 		return suspensionPoint;
 	}
-
 
 
 	// Update is called once per frame
