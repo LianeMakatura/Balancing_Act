@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pendant : MonoBehaviour {
+public class Pendant : MonoBehaviour, IPendant {
 	public float mat_density = 1;
 	public bool isConnector = false; // assume it's an object
 	public float sample_rate = 0.001f;
@@ -74,6 +74,7 @@ public class Pendant : MonoBehaviour {
 			}
 		}
 		// average all the positions by how many points were included (because we're assuming uniform density so they all have the same "mass" ie equal weighting)
+		Debug.LogWarning("numpoints is " + num_points);
 		Vector3 com = point_sum / num_points;
 
 		//update the center of mass of the object (will no longer update automatically but that's not necessary anyway)
@@ -113,6 +114,14 @@ public class Pendant : MonoBehaviour {
 		suspPt.transform.position = suspensionPoint;
 	}
 
+	public Vector3 getCenterOfMass() {
+		return centerOfMass;
+	}
+
+	public Vector3 getSuspensionPoint() {
+		return suspensionPoint;
+	}
+
 
 
 	public float SignedVolumeOfTriangle(Vector3 p1, Vector3 p2, Vector3 p3) //http://gamedev.stackexchange.com/questions/106318/getting-the-volume-of-an-uneven-mesh
@@ -142,6 +151,7 @@ public class Pendant : MonoBehaviour {
 		volume *= meshF.gameObject.transform.localScale.x * meshF.gameObject.transform.localScale.y * meshF.gameObject.transform.localScale.z;
 		return Mathf.Abs(volume);
 	}
+
 
 	public void Update() {
 
