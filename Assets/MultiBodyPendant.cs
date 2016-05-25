@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 public class MultiBodyPendant : MonoBehaviour {
 	public List<GameObject> pendants;
-	private Vector3 CenterOfMass;
+	private Vector3 centerOfMass;
+	private Vector3 suspensionPoint;
 	private GameObject newConnector;
 
 	// Use this for initialization
@@ -14,7 +15,7 @@ public class MultiBodyPendant : MonoBehaviour {
 		Rigidbody rb = gameObject.AddComponent<Rigidbody> (); // make this object have mass, CoM, etc.
 		rb.useGravity = false;		// don't want these unless simulating
 		rb.isKinematic = true;
-		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
+//		rb.constraints = RigidbodyConstraints.FreezePositionZ; // might also need to freeze rotation later, not sure.
 
 		gameObject.AddComponent<RigidBodyEditor> ();
 
@@ -42,8 +43,8 @@ public class MultiBodyPendant : MonoBehaviour {
 
 	// to be called via message after all objects have been added in ConnectComponents
 	public void freezeGroup () {
-		CenterOfMass = computeCenterOfMass(); // compute the center of mass
-		gameObject.GetComponent<Rigidbody>().centerOfMass = CenterOfMass; // change the location of the suspension point to be the center of mass
+		centerOfMass = computeCenterOfMass(); // compute the center of mass
+		gameObject.GetComponent<Rigidbody>().centerOfMass = centerOfMass; // change the location of the suspension point to be the center of mass
 
 		//update the fixed joint
 		newConnector.GetComponent<FixedJoint>().connectedBody = gameObject.GetComponent<RigidBodyEditor>().marker.GetComponent<Rigidbody>();
@@ -60,6 +61,16 @@ public class MultiBodyPendant : MonoBehaviour {
 		CoM_loc /= mass_sum;
 		return CoM_loc;
 	}
+
+	public Vector3 getCenterOfMass() {
+		return centerOfMass;
+	}
+
+	public Vector3 getSuspensionPoint() {
+		return suspensionPoint;
+	}
+
+
 
 	// Update is called once per frame
 	void Update () {

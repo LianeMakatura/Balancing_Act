@@ -14,7 +14,7 @@ public class SuspensionPoint : MonoBehaviour {
 		masterMobile = GameObject.Find("Mobile_Master").GetComponent<MobileMaster> ();
 
 		// add fixed joint
-		gameObject.AddComponent<FixedJoint>(); // implicitly connected to the world
+//		gameObject.AddComponent<FixedJoint>(); // implicitly connected to the world
 
 		// set to trigger
 		gameObject.GetComponent<SphereCollider>().isTrigger = true;
@@ -27,13 +27,16 @@ public class SuspensionPoint : MonoBehaviour {
 		// check to see if the susp. pt has been selected
 		if(Input.GetMouseButtonDown(0)){
 			if (masterMobile.selected.Count <= 2) { // there's still room in the selected array
+
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit, 100) && hit.transform.gameObject == gameObject) {
+
+				if (gameObject.GetComponent<SphereCollider>().Raycast (ray, out hit, 100) && hit.transform.gameObject == gameObject) {
 					currentColor = 1 - currentColor;
 					colorChanged = true;
 					Debug.Log ("colorChanged");
 				} 
+
 			}
 		}
 

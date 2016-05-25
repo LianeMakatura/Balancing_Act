@@ -7,9 +7,11 @@ public class ConnectComponents : MonoBehaviour {
 	// multibody pendant object, and update the center of mass (math and display)
 	// will have to look at rigid connections between these things, and how to fix a point and simulate
 	public Button myselfButton;
+	public GameObject pend;
 	private MobileMaster masterMobile;
 	private GameObject obj1, obj2, newConnector;
 	public float indicator_size = 0.1f;
+	private int conn_num = 0;
 
 
 	// Use this for initialization
@@ -35,26 +37,61 @@ public class ConnectComponents : MonoBehaviour {
 		}
 	}
 
-	// connect the selected objects
+//	// connect the selected objects
+//	void makeConnector() {
+//		// instantiate the cylinder with one of the points as point of instantiation
+//		Vector3 obj1_pos = obj1.transform.position;
+//		Vector3 obj2_pos = obj2.transform.position;
+//
+//		Vector3 pos = Vector3.Lerp (obj1_pos, obj2_pos, 0.5f); // put origin of object in between the two pieces
+//
+//		newConnector = GameObject.CreatePrimitive (PrimitiveType.Cylinder);
+//		newConnector.transform.position = pos;
+//
+//		MeshCollider col = newConnector.AddComponent<MeshCollider> ();
+//		Destroy (newConnector.GetComponent<CapsuleCollider>());
+//
+//
+//		Vector3 scale_vec = new Vector3 (indicator_size, indicator_size, indicator_size);
+//		newConnector.transform.localScale = scale_vec;
+//		Debug.Log ("scale of piece is " + scale_vec.ToString());
+//
+//		// transform.LookAt to make y axis of cylinder face the other point
+//		newConnector.transform.LookAt (obj2.transform.TransformPoint (obj2_pos));
+//		newConnector.transform.Rotate (new Vector3 (1.0f, 0, 0), 90);
+//
+//		//scale cylinder based on distance between the points
+//		Vector3 newScale = newConnector.transform.localScale;
+//		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2;
+//		Debug.Log ("scale of piece is " + newScale.ToString());
+//		newConnector.transform.localScale = newScale;
+//
+//		Pendant p = newConnector.AddComponent<Pendant> (); // we need material density, volume; adds rigid body and draggable
+//		p.isConnector = true;
+//		newConnector.GetComponent<DragRigidBody> ().isDraggable = true;
+//	}
+
 	void makeConnector() {
 		// instantiate the cylinder with one of the points as point of instantiation
 		Vector3 obj1_pos = obj1.transform.position;
 		Vector3 obj2_pos = obj2.transform.position;
 
+		Debug.LogWarning ("objessdfsdlkfjs " + obj1_pos + ", " + obj2_pos);
+
 		Vector3 pos = Vector3.Lerp (obj1_pos, obj2_pos, 0.5f); // put origin of object in between the two pieces
 
-		newConnector = GameObject.CreatePrimitive (PrimitiveType.Cylinder);
-		newConnector.transform.position = pos;
+		Quaternion rot = Quaternion.identity;
+		newConnector = Instantiate (pend, pos, rot) as GameObject;
+		newConnector.AddComponent<Pendant> ();
 
-		newConnector.GetComponent<CapsuleCollider>().isTrigger = true;
-
+		newConnector.name = "Connector " + conn_num++;
 
 		Vector3 scale_vec = new Vector3 (indicator_size, indicator_size, indicator_size);
 		newConnector.transform.localScale = scale_vec;
 		Debug.Log ("scale of piece is " + scale_vec.ToString());
 
 		// transform.LookAt to make y axis of cylinder face the other point
-		newConnector.transform.LookAt (obj2.transform.TransformPoint (obj2_pos));
+		newConnector.transform.LookAt (obj2.transform.position );
 		newConnector.transform.Rotate (new Vector3 (1.0f, 0, 0), 90);
 
 		//scale cylinder based on distance between the points
@@ -62,11 +99,7 @@ public class ConnectComponents : MonoBehaviour {
 		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2;
 		Debug.Log ("scale of piece is " + newScale.ToString());
 		newConnector.transform.localScale = newScale;
-
-		Pendant p = newConnector.AddComponent<Pendant> (); // we need material density, volume; adds rigid body and draggable
-		p.isConnector = true;
-		newConnector.GetComponent<DragRigidBody> ().isDraggable = true;
-	}
+	} 
 
 
 	void createMultiBodyPendant() {

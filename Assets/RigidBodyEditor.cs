@@ -37,15 +37,15 @@ public class RigidBodyEditor : MonoBehaviour
 
 		// need to find the highest intersection point of the mesh that's above the com
 		if (marker != null && game_object_rb != null) {
-			marker.transform.position = gameObject.GetComponent<Pendant> ().suspensionPoint;
+			marker.transform.position = gameObject.GetComponent<IPendant> ().getSuspensionPoint();
 		}
 
 	}
 
 	// to remove the suspension point after the object it's attached to becomes immutable
 	public void removeSuspensionPoint() {
-		Destroy (marker);
-		marker = null;
+//		Destroy (marker);
+//		marker = null;
 	}
 
 	void Update()
