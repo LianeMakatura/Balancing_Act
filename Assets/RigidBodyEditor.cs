@@ -44,8 +44,16 @@ public class RigidBodyEditor : MonoBehaviour
 
 	// to remove the suspension point after the object it's attached to becomes immutable
 	public void removeSuspensionPoint() {
-//		Destroy (marker);
-//		marker = null;
+		Destroy (marker);
+		marker = null;
+	}
+
+	// so you can't click on the suspension point after the object's been attached
+	public void invalidateSuspensionPoint() {
+		Destroy (marker.GetComponent<SphereCollider>());
+		Destroy (marker.GetComponent<SuspensionPoint> ());
+		Material mat = marker.GetComponent<Renderer>().material; //change the sphere's material to be red
+		mat.color = Color.black;
 	}
 
 	void Update()
