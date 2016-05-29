@@ -125,8 +125,8 @@ public class Pendant : MonoBehaviour, IPendant {
 
 		// we've got the last (highest) intersection
 		// take off 2 radii of the suspension point (so top of hole is 1 radius from top of object)
-		//suspensionPoint.y -= 2 * suspPt.transform.localScale.y;
-		suspensionPoint.y += suspPt.GetComponent<SphereCollider>().radius * suspPt.transform.localScale.y;
+		suspensionPoint.y += suspPt.GetComponent<SphereCollider>().radius * suspPt.transform.localScale.y; // if you want connection hole above
+//		suspensionPoint.y -=  2* (suspPt.GetComponent<SphereCollider>().radius * suspPt.transform.localScale.y); // if you want holes inside
 
 		suspPt.transform.position = suspensionPoint;
 	}
