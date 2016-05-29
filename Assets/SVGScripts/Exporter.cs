@@ -182,7 +182,7 @@ public class Exporter : ScriptableWizard
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbMaterials = new StringBuilder();
 		sb.AppendLine("# Export of " + Application.loadedLevelName);
-		sb.AppendLine("# from Aaro4130 OBJ Exporter " + versionString);
+		sb.AppendLine("# OBJ Exporter " + versionString);
 		if (generateMaterials)
 		{
 			sb.AppendLine("mtllib " + baseFileName + ".mtl");

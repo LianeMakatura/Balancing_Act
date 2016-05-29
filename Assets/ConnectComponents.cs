@@ -10,7 +10,7 @@ public class ConnectComponents : MonoBehaviour {
 	public GameObject pend;
 	private MobileMaster masterMobile;
 	private GameObject obj1, obj2, newConnector;
-	public float indicator_size = 0.1f;
+	public float indicator_size = 1f;
 	private int conn_num = 0;
 
 

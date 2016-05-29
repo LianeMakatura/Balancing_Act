@@ -7,6 +7,7 @@ public class InstantiateDolphin : MonoBehaviour {
 	public GameObject pendInstance;
 	public Button myselfButton;
 	private int numCube = 0;
+	public Mesh model;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,12 @@ public class InstantiateDolphin : MonoBehaviour {
 	}
 
 	void instantiateMyDolphin() {
+		model = (Mesh) Resources.Load ("Dolphin", typeof(Mesh));
+		//				pend = Instantiate(model) as GameObject;
+
+		pend.GetComponent<MeshFilter>().mesh = model;
+		pend.GetComponent<MeshCollider>().sharedMesh = model;
+
 		Vector3 pos = new Vector3(0, 0, 0);
 		Quaternion rot = Quaternion.identity;
 		pendInstance = Instantiate (pend, pos, rot) as GameObject;

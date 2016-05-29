@@ -4,7 +4,7 @@ using UnityEngine;
 public class RigidBodyEditor : MonoBehaviour
 {
 
-	public float CoM_indicator_size = 0.1f;
+	public float CoM_indicator_size = 1f;
 	private Vector3 marker_scale_vec;
 	public GameObject marker; 
 	private Rigidbody game_object_rb;
