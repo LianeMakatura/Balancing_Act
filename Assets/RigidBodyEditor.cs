@@ -8,8 +8,8 @@ public class RigidBodyEditor : MonoBehaviour
 	private Vector3 marker_scale_vec;
 	public GameObject marker; 
 	private Rigidbody game_object_rb;
+	public GameObject torus;
 
-//	public MeshCollider meshCollider;
 
 	void Awake() {
 		game_object_rb = gameObject.GetComponent<Rigidbody>();
@@ -50,10 +50,10 @@ public class RigidBodyEditor : MonoBehaviour
 
 	// so you can't click on the suspension point after the object's been attached
 	public void invalidateSuspensionPoint() {
-		Destroy (marker.GetComponent<SphereCollider>());
-		Destroy (marker.GetComponent<SuspensionPoint> ());
-		Material mat = marker.GetComponent<Renderer>().material; //change the sphere's material to be red
-		mat.color = Color.black;
+		Destroy (marker);
+
+		// add the torus (will have to delete sphere also)
+		marker = (GameObject) Instantiate(Resources.Load("torus_vert"), marker.transform.position, Quaternion.identity);
 	}
 
 	void Update()

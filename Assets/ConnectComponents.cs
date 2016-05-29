@@ -10,6 +10,8 @@ public class ConnectComponents : MonoBehaviour {
 	public GameObject pend;
 	private MobileMaster masterMobile;
 	private GameObject obj1, obj2, newConnector;
+	private GameObject connLoop1, connLoop2;
+
 	public float indicator_size = 1f;
 	private int conn_num = 0;
 
@@ -60,11 +62,19 @@ public class ConnectComponents : MonoBehaviour {
 
 		//scale cylinder based on distance between the points
 		Vector3 newScale = newConnector.transform.localScale;
-		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2;
+		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2 - 1;
 		Debug.Log ("scale of piece is " + newScale.ToString());
 		newConnector.transform.localScale = newScale;
 
-		newConnector.transform.Translate (new Vector3 (0f, 1.5f, 0f), Space.World);
+		connLoop1 = (GameObject) Instantiate(Resources.Load("torus_vert"), obj1.transform.position, Quaternion.identity);
+
+		connLoop2 = (GameObject)Instantiate (Resources.Load("torus_vert"), obj2.transform.position, Quaternion.identity);
+
+		Vector3 shift = new Vector3 (0f, 4f, 0f);
+		newConnector.transform.Translate (shift, Space.World);
+		connLoop1.transform.Translate (shift, Space.World);
+		connLoop2.transform.Translate (shift, Space.World);
+
 	} 
 
 
@@ -78,6 +88,9 @@ public class ConnectComponents : MonoBehaviour {
 		mbp.addPendant (obj2.transform.parent.gameObject);
 
 		mbp.SendMessage ("freezeGroup");
+
+		// track the last connector so we can finish mobile
+		masterMobile.last_susp_pt = mbp;
 	}
 
 	void makeImmutable_connect() {
