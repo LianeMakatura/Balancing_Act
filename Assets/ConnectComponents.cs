@@ -64,7 +64,7 @@ public class ConnectComponents : MonoBehaviour {
 		Debug.Log ("scale of piece is " + newScale.ToString());
 		newConnector.transform.localScale = newScale;
 
-		newConnector.transform.Translate (newConnector.transform.InverseTransformVector(new Vector3 (0f, 0.075f, 0f)));
+		newConnector.transform.Translate (new Vector3 (0f, 1.5f, 0f), Space.World);
 	} 
 
 
