@@ -33,7 +33,7 @@ public class ConnectComponents : MonoBehaviour {
 			createMultiBodyPendant ();
 			Debug.Log ("the value of newConnector is " + newConnector.ToString());
 			makeImmutable_connect ();
-		} 
+		}
 		else {
 			Debug.Log ("Must have 2 selected");
 		}
@@ -62,7 +62,8 @@ public class ConnectComponents : MonoBehaviour {
 
 		//scale cylinder based on distance between the points
 		Vector3 newScale = newConnector.transform.localScale;
-		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2 - 1;
+		//newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2 - 1; // for diameter 1 cylinder
+		newScale.y = Vector3.Distance (obj1_pos, obj2_pos) / 2 - 0.6f; // for diameter 2 cylinder
 		Debug.Log ("scale of piece is " + newScale.ToString());
 		newConnector.transform.localScale = newScale;
 
@@ -75,7 +76,7 @@ public class ConnectComponents : MonoBehaviour {
 		connLoop1.transform.Translate (shift, Space.World);
 		connLoop2.transform.Translate (shift, Space.World);
 
-	} 
+	}
 
 
 	void createMultiBodyPendant() {
@@ -98,7 +99,7 @@ public class ConnectComponents : MonoBehaviour {
 		GameObject cube2 = obj2.transform.parent.gameObject;
 
 		masterMobile.selected.Remove(obj1);			// clear out the selected list
-		masterMobile.selected.Remove(obj2);	
+		masterMobile.selected.Remove(obj2);
 
 		cube1.SendMessage ("makeImmutable");
 		cube2.SendMessage ("makeImmutable");
