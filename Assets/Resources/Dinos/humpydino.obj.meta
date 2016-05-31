@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: 041ff680a1e2448a6933e97ebffc025c
-timeCreated: 1464643562
+guid: d24fed6f4619746f4a13163d9d852536
+timeCreated: 1464667991
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: baby_face:Mesh
+    100002: humpydino:Mesh
     400000: //RootNode
-    400002: baby_face:Mesh
-    2300000: baby_face:Mesh
-    3300000: baby_face:Mesh
-    4300000: baby_face:Mesh
+    400002: humpydino:Mesh
+    2300000: humpydino:Mesh
+    3300000: humpydino:Mesh
+    4300000: humpydino:Mesh
   materials:
     importMaterials: 1
     materialName: 0
@@ -36,7 +36,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 1.3
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

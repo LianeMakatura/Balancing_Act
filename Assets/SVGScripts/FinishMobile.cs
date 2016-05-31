@@ -13,8 +13,15 @@ public class FinishMobile : MonoBehaviour {
 
 
 	void Finish() {
+		// mute creation buttons
+		Canvas canvas = myselfButton.transform.parent.GetComponentInChildren<Canvas>();
+		Button[] buttons = canvas.GetComponentsInChildren<Button> ();
+		foreach (Button button in buttons) {
+			button.interactable = false;
+		}
+
+		// send msg to mobile master
 		MobileMaster masterMobile = GameObject.Find("Mobile_Master").GetComponent<MobileMaster> ();
-		Debug.Log ("EYYYYYY");
 		masterMobile.last_susp_pt.SendMessage ("invalidateSuspensionPoint");
 	}
 

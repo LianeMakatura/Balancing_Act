@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: c555d29a51e1444c4a8480fc3ff88696
-timeCreated: 1464643564
+guid: 9132f33cd0e424baf841b51c89899e31
+timeCreated: 1464667990
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: long_neck_dino:Mesh
+    100002: spike:Mesh
     400000: //RootNode
-    400002: long_neck_dino:Mesh
-    2300000: long_neck_dino:Mesh
-    3300000: long_neck_dino:Mesh
-    4300000: long_neck_dino:Mesh
+    400002: spike:Mesh
+    2300000: spike:Mesh
+    3300000: spike:Mesh
+    4300000: spike:Mesh
   materials:
     importMaterials: 1
     materialName: 0

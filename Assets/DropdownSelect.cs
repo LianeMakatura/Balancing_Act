@@ -13,19 +13,24 @@ public class DropdownSelect : MonoBehaviour {
 	public Button myselfButton;
 	private int tracking = 0;
 	public Mesh model;
-//	private string name = "seal";
 
 	void Start() {
-		Canvas canvas;
 		myDropdown = GetComponent<Dropdown> ();
-		canvas = myDropdown.transform.parent.GetComponentInChildren<Canvas>();
 
+		// mute all buttons before selection
+		foreach (Button button in myDropdown.transform.parent.GetComponentsInChildren<Button>()) {
+			button.interactable = false;
+		}
+
+		Canvas canvas;
+		canvas = myDropdown.transform.parent.GetComponentInChildren<Canvas>();
 		buttons = canvas.GetComponentsInChildren<Button> ();
 		button0 = buttons [0];
 		button1 = buttons [1];
 		button2 = buttons [2];
 		button3 = buttons [3];
 		button4 = buttons [4];
+		button5 = buttons [5];
 			
 		myDropdown.onValueChanged.AddListener(delegate {
 			myDropdownValueChangedHandler(myDropdown);
@@ -38,7 +43,9 @@ public class DropdownSelect : MonoBehaviour {
 
 	// 0: Marine Animals, 1: Dinosaurs, 2: Star Wars
 	private void myDropdownValueChangedHandler(Dropdown target) {
-//		Debug.Log("selected: "+target.value);
+		foreach (Button button in myDropdown.transform.parent.GetComponentsInChildren<Button>()) {
+			if (!button.interactable) button.interactable = true;
+		}
 
 		// instantiate 6 new buttons
 		switch (target.value) {
@@ -55,12 +62,6 @@ public class DropdownSelect : MonoBehaviour {
 			DisplayStarWars ();
 			break;
 		}
-
-		// for 6 different buttons
-			// change text
-			// change image
-			// change onclick listener
-
 	}
 
 
@@ -69,26 +70,26 @@ public class DropdownSelect : MonoBehaviour {
 		prepButton (button0, "Marine/seastar", "Seastar");
 		prepButton (button1, "Marine/Dolphin", "Dolphin");
 		prepButton (button2, "Marine/jellyfish", "Jellyfish");
-		prepButton (button3, "Marine/seahorse", "Seahose");
+		prepButton (button3, "Marine/seahorse", "Seahorse");
 		prepButton (button4, "Marine/seal", "Seal");
 		prepButton (button5, "Marine/blue_whale", "Whale");
 	}
 
 	public void DisplayDinosaurs() {
-		prepButton (button0, "Dinos/MrRex", "T-Rex 1");
-		prepButton (button1, "Dinos/dino egg", "Dinosaur Egg");
+		prepButton (button0, "Dinos/MrRex", "Velociraptor");
+		prepButton (button1, "Dinos/dino_egg", "Dinosaur Egg");
 		prepButton (button2, "Dinos/herbovor", "Apatosaurus");
-		prepButton (button3, "Dinos/long neck dino", "Spike");
-		prepButton (button4, "Dinos/tRex", "T-Rex 2");
-//		prepButton (button5, "Dinos/blue_whale", "Whale");
+		prepButton (button3, "Dinos/pointydino", "Stegosaurus");
+		prepButton (button4, "Dinos/tRex", "T-Rex");
+		prepButton (button5, "Dinos/humpydino", "Loch Ness Monster");
 	}
 
 	public void DisplayStarWars() {
 		prepButton (button0, "Starwars/bb8", "BB-8");
-		prepButton (button1, "Starwars/Darth vader", "Darth Vader");
+		prepButton (button1, "Starwars/Darth_vader", "Darth Vader");
 		prepButton (button2, "Starwars/falcon", "Millenium Falcon");
-		prepButton (button3, "Starwars/death star", "Death Star");
-		prepButton (button4, "Starwars/Galactic Empire", "Empire Logo");
+		prepButton (button3, "Starwars/death_star", "Death Star");
+		prepButton (button4, "Starwars/Galactic_Empire", "Empire Logo");
 		prepButton (button5, "Starwars/yoda", "Yoda");
 	}
 
@@ -97,6 +98,7 @@ public class DropdownSelect : MonoBehaviour {
 
 		pend.GetComponent<MeshFilter>().mesh = model;
 		pend.GetComponent<MeshCollider>().sharedMesh = model;
+		Debug.Log (pend.GetComponent<MeshCollider> ().sharedMesh);
 
 		Vector3 pos = new Vector3(0, 0, 0);
 		Quaternion rot = Quaternion.identity;
