@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class DropdownSelect : MonoBehaviour {
 	public Dropdown myDropdown;
 	private Button[] buttons;
-	private Button button0, button1, button2, button3, button4;
+	private Button button0, button1, button2, button3, button4, button5;
 
 	public GameObject pend;
 	public GameObject pendInstance;
@@ -16,7 +16,6 @@ public class DropdownSelect : MonoBehaviour {
 //	private string name = "seal";
 
 	void Start() {
-		Transform panel;
 		Canvas canvas;
 		myDropdown = GetComponent<Dropdown> ();
 		canvas = myDropdown.transform.parent.GetComponentInChildren<Canvas>();
@@ -44,14 +43,16 @@ public class DropdownSelect : MonoBehaviour {
 		// instantiate 6 new buttons
 		switch (target.value) {
 		case 0:
-			Debug.Log ("0");
+			Debug.Log ("0");		// marine animals
 			DisplayMarineAnimals ();
 			break;
-		case 1:
-			Debug.Log("1");
+		case 1:						// dinosaurs
+			Debug.Log ("1");
+			DisplayDinosaurs ();
 			break;
-		case 2:
-			Debug.Log("2");
+		case 2:						// star wars
+			Debug.Log ("2");
+			DisplayStarWars ();
 			break;
 		}
 
@@ -62,27 +63,33 @@ public class DropdownSelect : MonoBehaviour {
 
 	}
 
-//	public GameObject CreateButton(Transform panel ,Vector3 position, Vector2 size)  
-//	{
-//		GameObject button = new GameObject("button1");
-//		button.transform.parent = panel;
-//		button.AddComponent<RectTransform>();
-//		button.AddComponent<Button>();
-//		button.transform.position = position;
-////		button.GetComponent<RectTransform>().SetSize(size);
-////		button.GetComponent<Button>().onClick.AddListener(method);
-////		button.AddComponent(script);
-//
-//		return button;
-//	}
 
 	// 0 = blue_whale, 1 = Dolphin, 2 = jellyfish, 3 = seahorse, 4 = seal
 	public void DisplayMarineAnimals() {
-		prepButton (button0, "blue_whale", "Whale");
-		prepButton (button1, "Dolphin", "Dolphin");
-		prepButton (button2, "jellyfish", "Jellyfish");
-		prepButton (button4, "seal", "Seal");
+		prepButton (button0, "Marine/seastar", "Seastar");
+		prepButton (button1, "Marine/Dolphin", "Dolphin");
+		prepButton (button2, "Marine/jellyfish", "Jellyfish");
+		prepButton (button3, "Marine/seahorse", "Seahose");
+		prepButton (button4, "Marine/seal", "Seal");
+		prepButton (button5, "Marine/blue_whale", "Whale");
+	}
 
+	public void DisplayDinosaurs() {
+		prepButton (button0, "Dinos/MrRex", "T-Rex 1");
+		prepButton (button1, "Dinos/dino egg", "Dinosaur Egg");
+		prepButton (button2, "Dinos/herbovor", "Apatosaurus");
+		prepButton (button3, "Dinos/long neck dino", "Spike");
+		prepButton (button4, "Dinos/tRex", "T-Rex 2");
+//		prepButton (button5, "Dinos/blue_whale", "Whale");
+	}
+
+	public void DisplayStarWars() {
+		prepButton (button0, "Starwars/bb8", "BB-8");
+		prepButton (button1, "Starwars/Darth vader", "Darth Vader");
+		prepButton (button2, "Starwars/falcon", "Millenium Falcon");
+		prepButton (button3, "Starwars/death star", "Death Star");
+		prepButton (button4, "Starwars/Galactic Empire", "Empire Logo");
+		prepButton (button5, "Starwars/yoda", "Yoda");
 	}
 
 	void instantiateAnimal(string meshName) {

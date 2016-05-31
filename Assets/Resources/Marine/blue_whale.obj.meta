@@ -1,22 +1,17 @@
 fileFormatVersion: 2
-guid: fb5b68b8ce08b493dbaf4ddd11247deb
-timeCreated: 1464153095
+guid: ffd56740af77d4ae5bf0a250670cabdf
+timeCreated: 1464655487
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: default
-    100002: //RootNode
-    100004: Skate:Mesh
-    400000: default
-    400002: //RootNode
-    400004: Skate:Mesh
-    2300000: default
-    2300002: Skate:Mesh
-    3300000: default
-    3300002: Skate:Mesh
-    4300000: default
-    4300002: Skate:Mesh
+    100000: //RootNode
+    100002: blue_whale:Mesh
+    400000: //RootNode
+    400002: blue_whale:Mesh
+    2300000: blue_whale:Mesh
+    3300000: blue_whale:Mesh
+    4300000: blue_whale:Mesh
   materials:
     importMaterials: 1
     materialName: 0

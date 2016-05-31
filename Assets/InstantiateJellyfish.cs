@@ -10,7 +10,7 @@ public class InstantiateJellyfish : MonoBehaviour {
 	public Button myselfButton;
 	private int numCube = 0;
 	public Mesh model;
-	private string name = "jellyfish";
+	private string name = "Starwars/bb8";
 
 	// Use this for initialization
 	void Start () {

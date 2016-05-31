@@ -10,7 +10,7 @@ public class InstantiateSkate : MonoBehaviour {
 	public Button myselfButton;
 	private int numCube = 0;
 	public Mesh model;
-	private string name = "Skate";
+	private string name = "Dinos/mrrex";//"Skate";
 
 	// Use this for initialization
 	void Start () {
